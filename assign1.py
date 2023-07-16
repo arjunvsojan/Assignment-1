@@ -12,58 +12,71 @@ with anyone or anything except for submission for grading.
 I understand that the Academic Honesty Policy will be enforced and 
 violators will be reported and appropriate action will be taken.
 
-Description: <Enter your documentation here>
+Description: This program accepts a valid date and the number of days as input to calculate the date by adding or subtracting the number from the date. 
+If it is positive integer, add the number to the date and if it is a negative integer, reduce the number of days from the inputted date.
 
 Date: July 15th, 2023
 '''
 import sys
 def usage():
-    "TODO enter docstring"
+    "Returns a string describing the usage of the script."
     return "Usage: assign1.py <valid date> <number of days>"
 
 def days_in_mon(year):
-    "TODO enter docstring"
+    '''Returns a dictionary object containing the total number of days in each month for the given year.
+     Args:
+        year (int): The year in "YYYY" format.
+    Returns:
+        dict: A dictionary object with month numbers (1-12) as keys and the corresponding number of days as values.
+    '''
     # return days
     days_in_mon = {
-        1: (31,"January"),
-        2: (28,"February"),
-        3: (31,"March"),
-        4: (30,"April"),
-        5: (31,"May"),
-        6: (30,"June"),
-        7: (31,"July"),
-        8: (31,"August"),
-        9: (30,"September"),
-        10: (31,"October"),
-        11: (30,"November"),
-        12: (31,"December")
+        1: 31,
+        2: 28,
+        3: 31,
+        4: 30,
+        5: 31,
+        6: 30,
+        7: 31,
+        8: 31,
+        9: 30,
+        10: 31,
+        11: 30,
+        12: 31
     }
 
     if leap_year(year):
-        days_in_mon[2] = (29,"February")
-        return days_in_mon
+        days_in_mon[2] = 29
+    return days_in_mon
+
 
 def valid_date(date):
-    "TODO enter docstring"
+    '''Checks if the given date is a valid date in "DD-MM-YYYY" format.
+    Args:
+        date (str): The date string to be validated in "DD-MM-YYYY" format.
+    Returns:
+        bool: True if the date is valid, False otherwise.'''
     # return True or False 
     if len(date)!=10:
+        print("Error: Wrong date entered ")
         return False
     try:
         day,month,year = map(int,date.split('-'))
     except ValueError:
         return False
-    if month not in range(1,13):
-        print ("You entered an invalid month. Please enter a valid month between 1 and 12")
+    if month not in range(1,12):
+        print ("Error: Wrong month entered")
         return False
     days_maximum = days_in_mon(year)[month]
     if day not in range(1,days_maximum+1):
-        print ("You entered an invalid day. Please enter a valid day for the month")
+        print ("Error: Wrong day entered")
         return False
-    return True
+    else:
+        return True
 
 def leap_year(year):
     "takes a year in YYYY format, and returns True if it's a leap year, False otherwise."
-    # TODO reorganize code, enter code from after() here.
+    
     lyear = year % 4 # TODO: put this into the function leap_year.
     if lyear == 0:
         feb_max = 29 # this is a leap year
@@ -108,12 +121,15 @@ def after(today):
         else:
             to_month = tmp_month + 0
 
-        next_date = str(to_day).zfill(2)+"-"+str(to_month).zfill(2)+"-"+str(year)
+        next_date = str(to_day).zfill(2)+"-"+str(to_month).zfill(2)+"-"+str(year).zfill(2)
         return next_date
 
 def before(today):
-    "TODO enter docstring."
-    pass # TODO replace this with code, using your algorithm document.
+    '''Returns the date of the previous day in "DD-MM-YYYY" format.
+    Args:
+        date (str): The date string in "DD-MM-YYYY" format.
+    Returns:
+        str: The date string representing the previous day in "DD-MM-YYYY" format.'''
     if len(today) != 10:
         return '00-00-0000'
     else:
@@ -124,50 +140,44 @@ def before(today):
         tmp_day = day - 1 # previous day
         mon_max = days_in_mon(year)
         
-    if tmp_day < 1:
-        prev_mon = True
-        if month == 1:
-            to_day = mon_max[12]
-            to_month = 12
+    if day > 1:
+        previous_month = month
+        previous_year = year
+    else:
+        if month > 1:
+            previous_month = month - 1
+            previous_year = year
+            tmp_day = days_in_mon(previous_year)[previous_month]
         else:
-            to_day = mon_max[month - 1]
-            to_month = month - 1
-    else:
-        prev_mon = False
-        to_day = tmp_day
-        to_month = month
+            previous_month = 12
+            previous_year = year - 1
+            tmp_day = days_in_mon(previous_year)[previous_month]
 
-    if to_month == 12:
-        to_month = 12
-        if prev_mon:
-            year -= 1
-    else:
-        to_month = tmp_month
-    next_date = str(to_day).zfill(2)+"-"+str(to_month).zfill(2)+"-"+str(year)
+    next_date = str(tmp_day).zfill(2)+"-"+str(previous_month).zfill(2)+"-"+str(previous_year)
     return next_date
 
 def dbda(start_date, num_days):
     end_date = 0
     # create a loop
-    if not valid_date(start_date):
-        print("Incorrect date format. Please enter the date in DD-MM-YYYY format")
-        return
+    while valid_date(start_date)!=False:
     # call before() or after() as appropriate
-    if num_days>=0:
-        next_day = after(start_date)
-        print (next_day)
-    else:
-        prev_day = before(start_date)
-        print(prev_day)
+        if num_days>=0:
+            end_date = after(start_date)
+            for _ in range(num_days-1):
+                end_date = after(end_date)
+            return end_date
+        else:
+            end_date=before(start_date)
+            for _ in range(abs(num_days+1)):
+                end_date=before(end_date)
+            return end_date
     # return end_date
 
 if __name__ == "__main__":
-    # process command line arguments
-    # call dbda()
-    # output the result
     if len(sys.argv) != 3:
         print(usage())
     else:
         start_date = sys.argv[1]
         num_days = int(sys.argv[2])
-        dbda(start_date, num_days)
+        end_date = dbda(start_date, num_days)
+        print (end_date)
