@@ -57,19 +57,17 @@ def valid_date(date):
     Returns:
         bool: True if the date is valid, False otherwise.'''
     # return True or False 
+    
     if len(date)!=10:
-        print("Error: Wrong date entered ")
+       print ("Error: wrong date entered")
+       return False
+    day,month,year = map(int,date.split('-'))
+    if month not in range(1,13):
+        print ("Error: wrong month entered")
         return False
-    try:
-        day,month,year = map(int,date.split('-'))
-    except ValueError:
-        return False
-    if month not in range(1,12):
-        print ("Error: Wrong month entered")
-        return False
-    days_maximum = days_in_mon(year)[month]
-    if day not in range(1,days_maximum+1):
-        print ("Error: Wrong day entered")
+    max_days = days_in_mon(year)[month]
+    if day not in range(1,max_days):
+        print ("Error: wrong day entered")
         return False
     else:
         return True
@@ -159,19 +157,32 @@ def before(today):
 def dbda(start_date, num_days):
     end_date = 0
     # create a loop
-    while valid_date(start_date)!=False:
+    if valid_date(start_date)!=False:
+        if num_days>=0:
+            end_date = after(start_date)
+            for _ in range(num_days-1):
+                end_date = after(end_date)
+            print (end_date)
+        else:
+            end_date=before(start_date)
+            for _ in range(abs(num_days+1)):
+                end_date=before(end_date)
+            print (end_date)
+
+
+    '''while valid_date(start_date)!=False:
     # call before() or after() as appropriate
         if num_days>=0:
             end_date = after(start_date)
             for _ in range(num_days-1):
                 end_date = after(end_date)
-            return end_date
+                print (end_date)
         else:
             end_date=before(start_date)
             for _ in range(abs(num_days+1)):
                 end_date=before(end_date)
-            return end_date
-    # return end_date
+                print (end_date)
+    # return end_date'''
 
 if __name__ == "__main__":
     if len(sys.argv) != 3:
@@ -180,4 +191,4 @@ if __name__ == "__main__":
         start_date = sys.argv[1]
         num_days = int(sys.argv[2])
         end_date = dbda(start_date, num_days)
-        print (end_date)
+        #print (end_date)
