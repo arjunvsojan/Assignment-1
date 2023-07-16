@@ -13,9 +13,9 @@ I understand that the Academic Honesty Policy will be enforced and
 violators will be reported and appropriate action will be taken.
 
 Description: This program accepts a valid date and the number of days as input to calculate the date by adding or subtracting the number from the date. 
-If it is positive integer, add the number to the date and if it is a negative integer, reduce the number of days from the inputted date.
+If it is positive integer, add the number to the date and if it is a negative integer, reduce the number of days from the inputted date and print the desired date back in DD-MM-YYYY format.
 
-Date: July 15th, 2023
+Date: July 16th, 2023
 '''
 import sys
 def usage():
@@ -51,12 +51,7 @@ def days_in_mon(year):
 
 
 def valid_date(date):
-    '''Checks if the given date is a valid date in "DD-MM-YYYY" format.
-    Args:
-        date (str): The date string to be validated in "DD-MM-YYYY" format.
-    Returns:
-        bool: True if the date is valid, False otherwise.'''
-    # return True or False 
+    '''Checks if the given date is a valid date in "DD-MM-YYYY" format and Returns True or False '''
     
     if len(date)!=10:
        print ("Error: wrong date entered")
@@ -75,22 +70,22 @@ def valid_date(date):
 def leap_year(year):
     "takes a year in YYYY format, and returns True if it's a leap year, False otherwise."
     
-    lyear = year % 4 # TODO: put this into the function leap_year.
+    lyear = year % 4 
     if lyear == 0:
-        feb_max = 29 # this is a leap year
+        feb_max = 29 
         return True
     else:
-        feb_max = 28 # this is not a leap year
+        feb_max = 28 
         
 
     lyear = year % 100
     if lyear == 0:
-        feb_max = 28 # this is not a leap year
+        feb_max = 28 
         return False
 
     lyear = year % 400
     if lyear == 0:
-        feb_max = 29 # this is a leap year
+        feb_max = 29 
         return True
 
 
@@ -104,10 +99,10 @@ def after(today):
         year = int(str_year)
         month = int(str_month)
         day = int(str_day)
-        tmp_day = day + 1 # next day
+        tmp_day = day + 1 
         mon_max = days_in_mon(year)
         if tmp_day > mon_max[month]:
-            to_day = tmp_day % mon_max[month] # if tmp_day > this month's max, reset to 1
+            to_day = tmp_day % mon_max[month]
             tmp_month = month + 1
         else:
             to_day = tmp_day
@@ -135,7 +130,7 @@ def before(today):
         year = int(str_year)
         month = int(str_month)
         day = int(str_day)
-        tmp_day = day - 1 # previous day
+        tmp_day = day - 1 
         mon_max = days_in_mon(year)
         
     if day > 1:
@@ -156,7 +151,7 @@ def before(today):
 
 def dbda(start_date, num_days):
     end_date = 0
-    # create a loop
+    
     if valid_date(start_date)!=False:
         if num_days>=0:
             end_date = after(start_date)
@@ -169,19 +164,6 @@ def dbda(start_date, num_days):
                 end_date=before(end_date)
             print (end_date)
 
-
-    '''while valid_date(start_date)!=False:
-    # call before() or after() as appropriate
-        if num_days>=0:
-            for _ in range(num_days-1):
-                end_date = after(end_date)
-                print (end_date)
-        else:
-            for _ in range(abs(num_days+1)):
-                end_date=before(end_date)
-                print (end_date)
-    # return end_date'''
-
 if __name__ == "__main__":
     if len(sys.argv) != 3:
         print(usage())
@@ -189,4 +171,3 @@ if __name__ == "__main__":
         start_date = sys.argv[1]
         num_days = int(sys.argv[2])
         end_date = dbda(start_date, num_days)
-        #print (end_date)
