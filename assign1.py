@@ -173,12 +173,10 @@ def dbda(start_date, num_days):
     '''while valid_date(start_date)!=False:
     # call before() or after() as appropriate
         if num_days>=0:
-            end_date = after(start_date)
             for _ in range(num_days-1):
                 end_date = after(end_date)
                 print (end_date)
         else:
-            end_date=before(start_date)
             for _ in range(abs(num_days+1)):
                 end_date=before(end_date)
                 print (end_date)
