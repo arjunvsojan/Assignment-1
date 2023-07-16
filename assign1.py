@@ -4,6 +4,8 @@
 OPS435 Assignment 1 - Fall 2021
 Program: assign1.py (replace student_id with your Seneca User name)
 Author: Arjun Vadakkekarayil Sojan
+Student Id: 144828217
+Seneca User name: avadakkekarayil-soja
 The python code in this file (assign1.py) is original work written by
 Arjun Vadakkekarayil Sojan. No code in this file is copied from any other source 
 except those provided by the course instructor, including any person, 
